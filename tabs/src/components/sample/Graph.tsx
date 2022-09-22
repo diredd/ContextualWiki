@@ -1,6 +1,12 @@
-import {Button} from "@fluentui/react-northstar";
+import {
+  Avatar,
+  Button,
+  Chat,
+  ChatMessage,
+  PersonIcon
+} from "@fluentui/react-northstar";
 import {Providers, ProviderState} from "@microsoft/mgt-element";
-import {Get} from "@microsoft/mgt-react";
+import {Get, ResponseType} from "@microsoft/mgt-react";
 import {TeamsFxProvider} from "@microsoft/mgt-teamsfx-provider";
 import {app} from "@microsoft/teams-js";
 import {useGraph} from "@microsoft/teamsfx-react";
@@ -8,6 +14,25 @@ import {useContext, useEffect, useState} from "react";
 import {TeamsFxContext} from "../Context";
 import "./Graph.css";
 import {PersonCardGraphToolkit} from "./PersonCardGraphToolkit";
+
+import {MgtTemplateProps} from "@microsoft/mgt-react";
+
+const MyEvent = (props: MgtTemplateProps) => {
+  console.log("props", props);
+  let messages = props.dataContext.value.map((x: any) => ({
+    gutter: <Avatar icon={<PersonIcon />} />,
+    key: x.id,
+    message: (
+      <ChatMessage
+        author={x.from.user.displayName}
+        content={x.body.content}
+        timestamp={x.createdTime}
+      />
+    )
+  }));
+
+  return <Chat items={messages} />;
+};
 
 export function Graph() {
   const {teamsfx} = useContext(TeamsFxContext);
@@ -44,10 +69,13 @@ export function Graph() {
         <PersonCardGraphToolkit loading={loading} data={data} error={error} />
         {appContext?.chat?.id && (
           <Get
+            type={ResponseType.json}
             resource={`/chats/${appContext.chat?.id ?? ""}/messages`}
             version='beta'
             scopes={["Chat.Read"]}
-            max-pages='4'></Get>
+            max-pages='4'>
+            <MyEvent template='default'></MyEvent>
+          </Get>
         )}
       </div>
     </div>

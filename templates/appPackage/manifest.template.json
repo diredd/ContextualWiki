@@ -55,9 +55,10 @@
         "id": "{{state.fx-resource-aad-app-for-teams.clientId}}",
         "resource": "{{{state.fx-resource-aad-app-for-teams.applicationIdUris}}}"
     },
-    "defaultInstallScope": "personal",
+    "defaultInstallScope": "groupchat",
     "defaultGroupCapability": {
-        "team": "bot",
-        "groupchat": "tab"
+        "team": "tab",
+        "groupchat": "tab",
+        "meetings": "tab"
     }
 }
