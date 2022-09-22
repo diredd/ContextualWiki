@@ -1,0 +1,15 @@
+.section-margin {
+  margin-left: 20px;
+}
+
+default-left-margin {
+  margin-left: 6px;
+}
+
+.mgt-light {
+  background-color: inherit !important;
+}
+
+.mgt-dark {
+  background-color: inherit !important;
+}
